@@ -26,6 +26,7 @@ public class Foodie5Application extends SpringBootServletInitializer{
 	
 
 //creación de usuarios iniciales
+/**
 @Bean
 CommandLineRunner iniData (UserRepo userREPO) {
 	return (args) -> {
@@ -50,6 +51,6 @@ CommandLineRunner iniDataCategories (CategoryRepo categoryREPO) {
 }
 
 
-
+*/
 
 }
