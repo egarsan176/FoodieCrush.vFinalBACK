@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig implements WebMvcConfigurer{
 	
-	private String url= "http://localhost:4200";
+	private String url= "https://foodiecrushfront.herokuapp.com";
 	//url
 	
 	@Bean
@@ -114,17 +114,6 @@ public class CorsConfig implements WebMvcConfigurer{
                         "Access-Control-Request-Headers")
                 .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
-//				registry.addMapping("/files/{id}")
-//				.allowedOrigins(url)
-//                .allowedHeaders("GET", "Content-Type", "Authorization", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
-//                        "Access-Control-Request-Headers")
-//                .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
-//				
-//				registry.addMapping("/files/{name}")
-//				.allowedOrigins(url)
-//                .allowedHeaders("GET", "Content-Type", "Authorization", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
-//                        "Access-Control-Request-Headers")
-//                .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
 				
 				//GESTIONES DEL ADMIN
 				registry.addMapping("/admin/**")

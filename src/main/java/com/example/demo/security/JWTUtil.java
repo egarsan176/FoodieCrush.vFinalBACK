@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 /**
- * Esta clase sirve para generar y validar el token.
+ * Clase JWTUtil
+ * Sirve para generar y validar el token.
  * El token se genera a partir del email del usuario y de su rol
  * @author estefgar
  *

@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Ingredient;
 import com.example.demo.repository.IngredientRepo;
-
+/**
+ * Servicio que se encarga de mediar entre el controller y el repositorio de Ingredient
+ * @author estefgar
+ *
+ */
 @Service
 public class IngredientService {
 	
@@ -74,7 +77,6 @@ public class IngredientService {
 		}
 	    
 	    List<Ingredient> resultado = listaING;
-	    //System.out.println(resultado);
 	    
 		return resultado;
 	}
@@ -114,6 +116,11 @@ public class IngredientService {
 		return this.getNoRepited((this.ingredientREPO.getIngredientsPending()));
 	}
 	
+	/**
+	 * MÉTODO para obtener un ingrediente a través de su id
+	 * @param id
+	 * @return ingrediente que coincide con ese id
+	 */
 	public Ingredient getIngredientByID(Integer id) {
 		return this.ingredientREPO.findById(id).orElse(null);
 	}

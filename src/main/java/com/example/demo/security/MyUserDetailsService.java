@@ -14,7 +14,8 @@ import org.springframework.stereotype.Component;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
 /**
- * Esta clase sirve para gestionar el login y los roles de usuario
+ * Clase MyUserDetailsService
+ * Sirve para gestionar el login y los roles de usuario
  * @author estefgar
  *
  */
@@ -27,7 +28,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> userRes = userRepo.findByEmail(email);
         if(userRes.isEmpty())
-            throw new UsernameNotFoundException("Could not findUser with email = " + email);
+            throw new UsernameNotFoundException("No se puede encontrar al usuario con email:  = " + email);
         User user = userRes.get();
         return new org.springframework.security.core.userdetails.User(
                 email,

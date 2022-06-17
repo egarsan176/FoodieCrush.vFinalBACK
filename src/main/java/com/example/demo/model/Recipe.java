@@ -17,7 +17,13 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
+/**
+ * Clase Recipe. Entidad.
+ * Crea el objeto Receta cuyos atributos son:
+ * id, recipeName, method, user, category, ingredientLine, file, fecha, isPending, comments.
+ * @author estefgar
+ *
+ */
 @Entity
 public class Recipe {
 	

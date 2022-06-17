@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -181,6 +180,9 @@ public class AdminController {
 		return re;
 	}
 	
+	/**
+	 * MÉTODO que gestiona peticiones DELETE a admin/users/id para eliminar a un usuario de la base de datos
+	 */
 	@DeleteMapping("admin/users/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable Long id){
 		
@@ -201,7 +203,7 @@ public class AdminController {
 	
 	
 	/**
-	 * Método que a través de una petición GET obtiene los ingredientes de la base de datos sin mostrar repetidos
+	 * MÉTODO que a través de una petición GET obtiene los ingredientes de la base de datos sin mostrar repetidos
 	 * @param isPending 
 	 * @return 	isPending es true --> devuelve los ingredientes pendientes
 	 * 			isPending es false --> devuelve los ingredientes aprobados
@@ -244,7 +246,11 @@ public class AdminController {
 		return re;
 		}
 	
-	
+	/**
+	 * MÉTODO que hace una petición GET a admin/ingredients/id para cambiar el estado pendiente de un ingrediente
+	 * @param id
+	 * @return el ingrediente con el estado cambiado
+	 */
 	@GetMapping("admin/ingredients/{id}")
 	public ResponseEntity<Ingredient> changeStatusIngredient(@PathVariable Integer id){
 		
@@ -282,6 +288,20 @@ public class AdminController {
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
 	}
+	/**
+	 * GESTIÓN DE EXCEPCIÓN IngredientNotFoundException
+	 * @param ex
+	 * @return un json con el estado, fecha, hora y mensaje de la excepción si el ingrediente no se encuentra 
+	 */
+	@ExceptionHandler(IngredientNotFoundException.class)
+	public ResponseEntity<ApiError> handleIngredientNotFound(IngredientNotFoundException ex) {
+		ApiError apiError = new ApiError();
+		apiError.setEstado(HttpStatus.NOT_FOUND);
+		apiError.setFecha(LocalDateTime.now());
+		apiError.setMensaje(ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+	}
 	
 	/**
 	 * GESTIÓN DE EXCEPCIÓN UserDeleteException
@@ -312,6 +332,22 @@ public class AdminController {
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
 	}
+	
+	/**
+	 * GESTIÓN DE EXCEPCIÓN IngredientStatusException
+	 * @param ex
+	 * @return un json con el estado, fecha, hora y mensaje de la excepción si el ingrediente ya está aprobaba por el administrador
+	 */
+	@ExceptionHandler(IngredientStatusException.class)
+	public ResponseEntity<ApiError> handleIngredientStatus(IngredientStatusException ex) {
+		ApiError apiError = new ApiError();
+		apiError.setEstado(HttpStatus.NOT_FOUND);
+		apiError.setFecha(LocalDateTime.now());
+		apiError.setMensaje(ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+	}
+	
 	/**
 	 * GESTIÓN DE EXCEPCIÓN CommentStatusException
 	 * @param ex
