@@ -59,6 +59,7 @@ public class RecipeService {
 	 * @param id
 	 * @return lista de recetas del usuario
 	 */
+	@Transactional
 	public List<Recipe> findRecipeListUser(Long id){
 		return this.recipeRepo.findByUserId(id);
 	}
@@ -68,6 +69,7 @@ public class RecipeService {
 	 * @param id
 	 * @return receta que coincide con ese id
 	 */
+	@Transactional
 	public Recipe findRecipeById(Integer id) {
 		return this.recipeRepo.findById(id).orElse(null);
 	}
@@ -84,6 +86,7 @@ public class RecipeService {
 	 * MÉTODO para devolver todas las recetas del repositorio que ya han sido aprobadas por el administrador
 	 * @return listado de todas las recetas aprobadas por el administrador
 	 */
+	@Transactional
 	public List<Recipe> findAllRecipesNotPending(){
 		return this.recipeRepo.findRecipesNotPending();
 	}
@@ -92,6 +95,7 @@ public class RecipeService {
 	 * MÉTODO para devolver todas las recetas del repositorio que no han sido aprobadas por el administrador
 	 * @return listado de todas las recetas que no han sido aprobadas por el administrador
 	 */
+	@Transactional
 	public List<Recipe> findAllRecipesPending(){
 		return this.recipeRepo.findRecipesPending();
 	}
@@ -101,6 +105,7 @@ public class RecipeService {
 	 * @param id
 	 * @return lista de recetas de la categoría que coincide con el id que se le pasa por parámetro
 	 */
+	@Transactional
 	public List<Recipe> findAllRecipesByCategory(Integer id){
 		return this.recipeRepo.findRecipesByCategory(id);
 	}
@@ -110,6 +115,7 @@ public class RecipeService {
 	 * @param recipeName
 	 * @return lista de recetas que coinciden cone se nombre
 	 */
+	@Transactional
 	public List<Recipe> findRecipesByName(String recipeName){
 		return this.recipeRepo.findRecipeByName(recipeName);
 	}
@@ -119,6 +125,7 @@ public class RecipeService {
 	 * @param recipeName
 	 * @return lista de recetas que contienen parte del nombre que se le pasa
 	 */
+	@Transactional
 	public List<Recipe> findRecipesBySimilarName(String recipeName){
 		return this.recipeRepo.findRecipeBySimilarName(recipeName);
 	}
@@ -160,22 +167,22 @@ public class RecipeService {
 		
 	}
 	
-	/**
-	 * MÉTODO  para añadirle una nueva línea de ingredientes a una receta ya existente
-	 * @param line
-	 * @param recipe
-	 * @return nueva línea de ingredientes
-	 */
-	public IngredientLine addIngredientLine(IngredientLine line, Recipe recipe) {
-		Ingredient ingredient = line.getIngredient();
-		this.ingredientService.addIngredient(ingredient);
-		this.ingredientLineService.add(line);
-		recipe.getIngredientLine().add(line);
-		this.recipeRepo.save(recipe);
-		
-		return line;
-		
-	}
+//	/**
+//	 * MÉTODO  para añadirle una nueva línea de ingredientes a una receta ya existente
+//	 * @param line
+//	 * @param recipe
+//	 * @return nueva línea de ingredientes
+//	 */
+//	public IngredientLine addIngredientLine(IngredientLine line, Recipe recipe) {
+//		Ingredient ingredient = line.getIngredient();
+//		this.ingredientService.addIngredient(ingredient);
+//		this.ingredientLineService.add(line);
+//		recipe.getIngredientLine().add(line);
+//		this.recipeRepo.save(recipe);
+//		
+//		return line;
+//		
+//	}
 	
 	/**
 	 * MÉTODO para comprobar si una receta ya contiene a un ingrediente concreto a través de una consulta
@@ -226,6 +233,7 @@ public class RecipeService {
 	 * @param number
 	 * @return lista de recetas que contienen los ingredientes que se pasan en la lista
 	 */
+	@Transactional
 	public List<Recipe> findRecipesFromIngredients(List<String> ingredientList, int number){
 		return this.recipeRepo.findRecipesFromIngredients(ingredientList, ingredientList.size());
 	}
@@ -234,3 +242,4 @@ public class RecipeService {
 
 
 }
+
