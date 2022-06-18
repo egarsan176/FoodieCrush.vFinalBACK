@@ -50,6 +50,7 @@ public class FilesStorageService {
 	}
 	
 	//te devuelve el fichero a través del nombre de la imagen
+	@Transactional
 	public FileDB findFileByName(String name) {
 		return this.fileREPO.findFileByName(name);
 		
