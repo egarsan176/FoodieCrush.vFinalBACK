@@ -62,6 +62,7 @@ public class FilesStorageService {
 	 * @param id de la receta
 	 * @return fichero
 	 */
+	 @Transactional
 	public FileDB getfileByRecipe(Integer id) {
 		return this.fileREPO.findFileFromRecipe(id);
 	}
