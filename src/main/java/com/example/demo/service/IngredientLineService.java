@@ -96,7 +96,7 @@ public class IngredientLineService {
 	public IngredientLine findByIngredient(Ingredient ingredient) {
 		return this.ingredientLineREPO.findByIngredient(ingredient);
 	}
-	@Transactional
+	
 	public void deleteLine(int recipeID) {
 		this.ingredientLineREPO.deleteLines(recipeID);
 	}
