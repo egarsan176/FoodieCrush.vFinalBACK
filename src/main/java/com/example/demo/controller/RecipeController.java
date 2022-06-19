@@ -29,11 +29,15 @@ import com.example.demo.exception.RecipeNotFoundException;
 import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.model.Category;
 import com.example.demo.model.Comment;
+import com.example.demo.model.IngredientLine;
+import com.example.demo.model.Method;
 import com.example.demo.model.Recipe;
 import com.example.demo.model.User;
 import com.example.demo.service.CategoryService;
 import com.example.demo.service.CommentService;
+import com.example.demo.service.IngredientLineService;
 import com.example.demo.service.IngredientService;
+import com.example.demo.service.MethodService;
 import com.example.demo.service.NotificationService;
 import com.example.demo.service.RecipeService;
 import com.example.demo.service.UserService;
@@ -51,9 +55,11 @@ public class RecipeController {
 	@Autowired private RecipeService recipeService;
 	@Autowired private CategoryService categoryService;
 	@Autowired private UserService userService;
+	@Autowired private IngredientLineService ingredientLineService;
 	@Autowired private CommentService commentService;
 	@Autowired private NotificationService notificationService;
 	@Autowired private IngredientService ingredientService;
+	@Autowired private MethodService methodService;
 	
 	//ACCESO A RECURSOS DE PRIMER NIVEL
 	
@@ -150,12 +156,36 @@ public class RecipeController {
 			if(cat == null) {
 				throw new CategoryNotFoundException(idCategory);
 			}else {
-				if("ADMIN".equals(user.getRole())) {
-					recipe.setIsPending(false);
-				}
+				
+				Recipe rec = new Recipe();
+				rec = this.recipeService.addRecipeBBDD(rec);
+				int id = rec.getId();
+				
 				recipe.setUser(user);
 				recipe.setCategory(cat);
-				return this.recipeService.addRecipeBBDD(recipe);
+				this.ingredientService.addIngredient(recipe);
+				List<IngredientLine> IngLineList = this.ingredientLineService.addIngredientLine(recipe);
+				List<Method> MethodRecipe = this.methodService.addMethod(recipe);
+				recipe.setIngredientLine(IngLineList);
+				recipe.setMethod(MethodRecipe);
+				this.recipeService.deleteRecipe(rec);
+		
+				rec.setUser(user);
+				rec.setCategory(cat);
+				for (IngredientLine line : IngLineList) {
+					line.setRecipe(rec);
+					
+				}
+				rec.setIngredientLine(IngLineList);
+				rec.setMethod(MethodRecipe);
+				rec.setRecipeName(recipe.getRecipeName());
+				rec.setFileID(recipe.getFile());
+				if("ADMIN".equals(user.getRole())) {
+					rec.setIsPending(false);
+				}
+				
+				return this.recipeService.addRecipeBBDD(rec);
+				
 			}
 		}else {
 			throw new UserNotFoundException(user.getId());

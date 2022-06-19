@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Comment;
 import com.example.demo.model.Recipe;
@@ -54,6 +55,7 @@ public class CommentService {
 	 * Este método obtiene todos los comentarios de la BBDD
 	 * @return una lista con todos los comentarios de la BBDD
 	 */
+	@Transactional
 	public List<Comment> getAllCommentBBDD(){
 		return this.commentREPO.findAll();
 	}
@@ -61,6 +63,7 @@ public class CommentService {
 	 * Este método obtiene todos los comentarios de la base de datos con estado pendiente.
 	 * @return lista de comentarios pendientes de aprobación
 	 */
+	@Transactional
 	public List<Comment> getAllCommentBDPending(){
 		return this.commentREPO.findAllCommentsPending();
 	}
@@ -68,6 +71,7 @@ public class CommentService {
 	 * Este método obtiene todos los comentarios de la base de datos con estado no pendiente.
 	 * @return lista de comentarios no pendientes
 	 */
+	@Transactional
 	public List<Comment> getAllCommentBDnotPending(){
 		return this.commentREPO.findAllCommentsNotPending();
 	}
@@ -77,6 +81,7 @@ public class CommentService {
 	 * @param recipe de la que se quieren obtener los comentarios
 	 * @return lista de comentarios de la receta que se le pasa por parámetro
 	 */
+	@Transactional
 	public List<Comment> getCommentsFromRecipe(Recipe recipe){
 		return recipe.getComments();
 	}
@@ -86,6 +91,7 @@ public class CommentService {
 	 * @param recipeID
 	 * @return lista de comentarios de una receta ya aprobados (is_pending = false)
 	 */
+	@Transactional
 	public List<Comment> getCommentsFromRecipeNotPending(Integer recipeID){
 		return this.commentREPO.findCommentsFromRecipeNotPending(recipeID);
 	}
@@ -95,6 +101,7 @@ public class CommentService {
 	 * @param recipeID
 	 * @return lista de comentarios de una receta no aprobados (is_pending = true)
 	 */
+	@Transactional
 	public List<Comment> getCommentsFromRecipePending(Integer recipeID){
 		return this.commentREPO.findCommentsFromRecipePending(recipeID);
 	}
@@ -104,6 +111,7 @@ public class CommentService {
 	 * @param commentID
 	 * @return comentaro que coincide con ese id
 	 */
+	@Transactional
 	public Comment getCommentFromRecipeByID(Integer commentID) {
 		return this.commentREPO.findById(commentID).orElse(null);
 	}

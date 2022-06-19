@@ -167,22 +167,6 @@ public class RecipeService {
 		
 	}
 	
-//	/**
-//	 * MÉTODO  para añadirle una nueva línea de ingredientes a una receta ya existente
-//	 * @param line
-//	 * @param recipe
-//	 * @return nueva línea de ingredientes
-//	 */
-//	public IngredientLine addIngredientLine(IngredientLine line, Recipe recipe) {
-//		Ingredient ingredient = line.getIngredient();
-//		this.ingredientService.addIngredient(ingredient);
-//		this.ingredientLineService.add(line);
-//		recipe.getIngredientLine().add(line);
-//		this.recipeRepo.save(recipe);
-//		
-//		return line;
-//		
-//	}
 	
 	/**
 	 * MÉTODO para comprobar si una receta ya contiene a un ingrediente concreto a través de una consulta

@@ -262,8 +262,7 @@ public class AdminController {
 		else if(!ing.isPending()) {
 			throw new IngredientStatusException(id);
 		}else {
-			ing.setPending(false);
-			this.ingredientService.addIngredient(ing);
+			this.ingredientService.checkStatusIngredient(ing);
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(ing);
 		

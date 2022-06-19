@@ -9,12 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Ingredient;
+import com.example.demo.model.IngredientLine;
+import com.example.demo.model.Recipe;
 import com.example.demo.repository.IngredientRepo;
-/**
- * Servicio que se encarga de mediar entre el controller y el repositorio de Ingredient
- * @author estefgar
- *
- */
+
 @Service
 public class IngredientService {
 	
@@ -22,13 +20,36 @@ public class IngredientService {
 	/**
 	 * MÉTODO para añadir un ingrediente a la bbdd
 	 * @param ingredient
-	 * @return el ingrediente que se ha añadido
 	 */
 	@Transactional
-	public void addIngredient(Ingredient ingredient) {
+	public void addIngredient(Recipe recipe) {
+		List<IngredientLine> list = recipe.getIngredientLine();
+		for (IngredientLine line : list) {
+			Ingredient ingred = line.getIngredient();
+			
+			Integer idIng = this.ingredientREPO.getIdFromIngredient(ingred.getName());
+			
+			if(idIng == null) {
+				this.ingredientREPO.save(ingred);
+			}else {
+				this.ingredientREPO.findById(idIng).orElse(null);
+			}
+		}
+
 		
+	}
+	@Transactional
+	public void checkStatusIngredient(Ingredient ingredient) {
+		ingredient.setPending(false);
 		this.ingredientREPO.save(ingredient);
-		
+	}
+	@Transactional
+	public List<Ingredient> findAllIngredients(){
+		return this.ingredientREPO.findAll();
+	}
+	
+	public Ingredient getIngredientByName(String name) {
+		return this.ingredientREPO.findByName(name);
 	}
 	
 	/**
@@ -77,6 +98,7 @@ public class IngredientService {
 		}
 	    
 	    List<Ingredient> resultado = listaING;
+	    //System.out.println(resultado);
 	    
 		return resultado;
 	}
@@ -98,6 +120,10 @@ public class IngredientService {
 		return listaNombresIng;
 	}
 	
+	public List<String> getAllNames(){
+		return this.ingredientREPO.getNameAllIngredients();
+	}
+	
 
 	
 	/**
@@ -116,11 +142,6 @@ public class IngredientService {
 		return this.getNoRepited((this.ingredientREPO.getIngredientsPending()));
 	}
 	
-	/**
-	 * MÉTODO para obtener un ingrediente a través de su id
-	 * @param id
-	 * @return ingrediente que coincide con ese id
-	 */
 	public Ingredient getIngredientByID(Integer id) {
 		return this.ingredientREPO.findById(id).orElse(null);
 	}

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,28 +18,25 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/**
- * Clase Recipe. Entidad.
- * Crea el objeto Receta cuyos atributos son:
- * id, recipeName, method, user, category, ingredientLine, file, fecha, isPending, comments.
- * @author estefgar
- *
- */
+
 @Entity
 public class Recipe {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "recipe_id")
 	private Integer id;
 	private String recipeName;
-	@OneToMany(cascade = CascadeType.ALL)
+	
+	@OneToMany
 	private List<Method> method = new  ArrayList<>();
 	@JsonIgnore
-	@ManyToOne (cascade = CascadeType.ALL)
+	@ManyToOne 
 	private User user;
 	@ManyToOne
 	private Category category;
-	@OneToMany(cascade = CascadeType.ALL)
+	
+	@OneToMany(mappedBy="recipe", cascade = CascadeType.ALL)
 	private List<IngredientLine> ingredientLine = new ArrayList<>();
 	
 	@OneToOne
@@ -46,7 +44,7 @@ public class Recipe {
 	@JsonIgnore
 	private Date fecha;
 	private boolean isPending = true;
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany
 	private List<Comment> comments;
 	
 	public Recipe(String recipeName, List<Method> method, User user, Category category, List<IngredientLine> ingredientLine) {

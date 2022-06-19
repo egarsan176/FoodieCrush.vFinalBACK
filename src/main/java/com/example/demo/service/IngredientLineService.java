@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Ingredient;
 import com.example.demo.model.IngredientLine;
+import com.example.demo.model.Recipe;
 import com.example.demo.repository.IngredientLineRepo;
 
 /**
@@ -20,6 +22,8 @@ public class IngredientLineService {
 	
 	@Autowired
 	private IngredientLineRepo ingredientLineREPO;
+	@Autowired 
+	private IngredientService ingredientService;
 	
 	/**
 	 * MÉTODO para almacenar una línea de ingredientes en la bbdd
@@ -37,6 +41,30 @@ public class IngredientLineService {
 	 */
 	public List<IngredientLine> findAll(){
 		return this.ingredientLineREPO.findAll();
+	}
+	
+	/**
+	 * MÉTODO para añadir todas las líneas de ingredientes de una nueva receta
+	 * @param recipe
+	 * @return listado líneas de ingredientes de la receta
+	 */
+	@Transactional
+	public List<IngredientLine> addIngredientLine(Recipe recipe) {
+		
+
+		
+		List<IngredientLine> line = recipe.getIngredientLine();
+		List<IngredientLine> result = new ArrayList<>();
+		
+		for (IngredientLine linea : line) {
+			Ingredient ingRecipe = linea.getIngredient();
+			Ingredient ingREPO = this.ingredientService.getIngredientByName(ingRecipe.getName());
+			linea.setIngredient(ingREPO);
+			linea.setAmount(linea.getAmount());
+			result.add(this.ingredientLineREPO.save(linea));
+		}
+		
+		return result;
 	}
 	
 	/**

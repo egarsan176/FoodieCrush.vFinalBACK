@@ -22,7 +22,7 @@ public interface FileRepo extends JpaRepository<FileDB, String>{
 	/**
 	 * CONSULTA para encontrar el fichero de una receta en concreto
 	 */
-	@Query(value="select * from files f where f.id =(select r.file_id from recipe r, files f2 where f2.id = r.file_id and r.id= ?1);", nativeQuery = true) 
+	@Query(value="select * from files f where f.id =(select r.file_id from recipe r, files f2 where f2.id = r.file_id and r.recipe_id= ?1);", nativeQuery = true) 
 	public FileDB findFileFromRecipe(Integer id);
 
 }

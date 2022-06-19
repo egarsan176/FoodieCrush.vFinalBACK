@@ -6,11 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.example.demo.model.Comment;
-/**
- * Encargada de la persistencia de datos de Comments
- * @author estefgar
- *
- */
+
 public interface CommentRepo extends JpaRepository <Comment, Integer>{
 	
 	/**
@@ -31,7 +27,7 @@ public interface CommentRepo extends JpaRepository <Comment, Integer>{
 	 * CONSULTA que devuelve todos los comentarios con estado NO pendiente de una receta en concreto
 	 * @return los comentarios de una receta que ya han sido aprobados por el administrador
 	 */
-	@Query(value="select * from comment where comment.is_pending = false and comment.recipe_id = ?1", nativeQuery = true)
+	@Query(value="select * from comment where comment.is_pending = false and comment.recipe_recipe_id = ?1", nativeQuery = true)
 	public List<Comment> findCommentsFromRecipeNotPending(Integer idRecipe);
 	
 	/**

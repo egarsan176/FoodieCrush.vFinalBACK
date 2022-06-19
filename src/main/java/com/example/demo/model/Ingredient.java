@@ -1,23 +1,31 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-/**
- * Clase Ingredient. Entidad.
- * Crea el objeto ingrediente, cuyos atributos son:
- * id, name, isPending.
- * @author estefgar
- *
- */
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Ingredient {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ingredient_id")
 	private Integer id;
 	private String name;
 	private boolean isPending;
+	
+	
+	@OneToMany(mappedBy="ingredient", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<IngredientLine> ingredientLine = new ArrayList<>();
 	
 	public Ingredient(String name) {
 		super();
@@ -55,6 +63,14 @@ public class Ingredient {
 
 	public void setPending(boolean isPending) {
 		this.isPending = isPending;
+	}
+
+	public List<IngredientLine> getIngredientLine() {
+		return ingredientLine;
+	}
+
+	public void setIngredientLine(List<IngredientLine> ingredientLine) {
+		this.ingredientLine = ingredientLine;
 	}
 
 

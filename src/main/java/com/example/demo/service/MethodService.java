@@ -1,11 +1,14 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Method;
+import com.example.demo.model.Recipe;
 import com.example.demo.repository.MethodRepo;
 /**
  * Servicio que se encarga de mediar entre el controller y el repositorio de Method
@@ -26,5 +29,19 @@ public class MethodService {
 			this.methodREPO.delete(method);
 		}
 		
+	}
+	
+	/**
+	 * MÉTODO para añadir un nuevo método a la receta
+	 * @param recipe
+	 * @return
+	 */
+	@Transactional
+	public List<Method> addMethod(Recipe recipe) {
+		List<Method> listMethodREPO = new  ArrayList<>();
+		for (Method step : recipe.getMethod()) {
+			listMethodREPO.add(this.methodREPO.save(step));
+		}
+		return listMethodREPO;
 	}
 }

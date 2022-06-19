@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig implements WebMvcConfigurer{
 	
 	private String url= "https://foodiecrushfront.herokuapp.com";
-	//url
+	//private String url= "http://localhost:4200";
 	
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
