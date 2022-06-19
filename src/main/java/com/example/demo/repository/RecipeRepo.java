@@ -80,58 +80,11 @@ public interface RecipeRepo extends JpaRepository<Recipe, Integer>{
 	@Query(value="select * from recipe where recipe.is_pending = true", nativeQuery = true)
 	public List<Recipe> findRecipesPending();
 	
-	/**
-	 * CONSULTA que devuelve las recetas que contienen un ingrediente que se le pasa por parámetro 
-	 * y que ya han sido aprobadas por el ADMIN (buscador de recetas)
-	 * @param ingredientName
-	 * @return lista de recetas que contienen ese ingrediente
-	 */
-	@Query(value="select * from recipe r where r.id in\n"
-			+ "                (select ril.recipe_id from recipe_ingredient_line ril where ril.ingredient_line_id in\n"
-			+ "                        (select il.ingredient_id from ingredient_line il where il.ingredient_id in\n"
-			+ "                                (select i.id from ingredient i where i.name = ?1)))\n"
-			+ "and r.is_pending = false", nativeQuery=true)
-	public List<Recipe> findRecipesOneIngredient(String ingredientName);
-	
-	/**
-	 * CONSULTA que devuelve las recetas que contienen dos ingredientes que se le pasan por parámetro
-	 * y que ya han sido aprobadas por el ADMIN (buscador de recetas)
-	 * @param ingredientName
-	 * @return lista de recetas que contienen esos ingredientes
-	 */
-	@Query(value="select * from recipe r where r.id in\n"
-			+ "                (select ril.recipe_id from recipe_ingredient_line ril where ril.ingredient_line_id in\n"
-			+ "                        (select il.ingredient_id from ingredient_line il where il.ingredient_id in\n"
-			+ "                                (select i.id from ingredient i where i.name = ?1)))\n"
-			+ "and r.id in (select ril.recipe_id from recipe_ingredient_line ril where ril.ingredient_line_id in\n"
-			+ "                        (select il.ingredient_id from ingredient_line il where il.ingredient_id in\n"
-			+ "                                (select i.id from ingredient i where i.name = ?2)))\n"
-			+ "and r.is_pending = false", nativeQuery=true)
-	public List<Recipe> findRecipesTwoIngredients(String ingredientName1, String ingredientName2);
-	
-	/**
-	 * CONSULTA que devuelve las recetas que contienen tres ingredientes que se le pasan por parámetro
-	 * y que ya han sido aprobadas por el ADMIN (buscador de recetas)
-	 * @param ingredientName
-	 * @return lista de recetas que contienen esos ingredientes
-	 */
-	@Query(value="select * from recipe r where r.id in\n"
-			+ "                (select ril.recipe_id from recipe_ingredient_line ril where ril.ingredient_line_id in\n"
-			+ "                        (select il.ingredient_id from ingredient_line il where il.ingredient_id in\n"
-			+ "                                (select i.id from ingredient i where i.name = ?1)))\n"
-			+ "and r.id in (select ril.recipe_id from recipe_ingredient_line ril where ril.ingredient_line_id in\n"
-			+ "                        (select il.ingredient_id from ingredient_line il where il.ingredient_id in\n"
-			+ "                                (select i.id from ingredient i where i.name = ?2)))\n"
-			+ "and r.id in (select ril.recipe_id from recipe_ingredient_line ril where ril.ingredient_line_id in\n"
-			+ "                        (select il.ingredient_id from ingredient_line il where il.ingredient_id in\n"
-			+ "                                (select i.id from ingredient i where i.name = ?3)))\n"
-			+ "and r.is_pending = false", nativeQuery=true)
-	public List<Recipe> findRecipesThreeIngredients(String ingredientName1, String ingredientName2, String ingredientName3);
 
-	@Query(value= "select * from recipe r, ingredient_line i\n"
-			+ "			where r.recipe_id = i.recipe_id and i.ingredient_id  IN\n"
-			+ "			(select ingredient.ingredient_id from ingredient where name in ?1 )\n"
-			+ "			GROUP BY r.recipe_name, r.recipe_id\n"
-			+ "			having count(*)  = ?2", nativeQuery=true)
+
+	@Query(value= "select * from recipe where recipe_id in (\n"
+			+ "select distinct recipe_id from ingredient_line where ingredient_id in(\n"
+			+ "select ingredient.ingredient_id from ingredient where name in ?1) group by recipe_id\n"
+			+ "having count(*) = ?2)", nativeQuery=true)
 	public List<Recipe> findRecipesFromIngredients(List<String> ingredientsList, int number);
 }
