@@ -40,6 +40,7 @@ public class MethodService {
 	public List<Method> addMethod(Recipe recipe) {
 		List<Method> listMethodREPO = new  ArrayList<>();
 		for (Method step : recipe.getMethod()) {
+			step.setStep(step.getStep().toUpperCase());
 			listMethodREPO.add(this.methodREPO.save(step));
 		}
 		return listMethodREPO;

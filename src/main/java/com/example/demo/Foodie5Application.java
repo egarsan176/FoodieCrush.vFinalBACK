@@ -25,32 +25,6 @@ public class Foodie5Application extends SpringBootServletInitializer{
 @Autowired private PasswordEncoder passEncoder; 
 	
 
-//creación de usuarios iniciales
-//
-//@Bean
-//CommandLineRunner iniData (UserRepo userREPO) {
-//	return (args) -> {
-//		userREPO.save(new User("Lola Flores", "lolaFLO", "lolaFlores@gmail.com", passEncoder.encode("123456"), "USER"));
-//		userREPO.save(new User("Pepe López", "pepLo", "pelopez@gmail.com", passEncoder.encode("123456"), "USER"));
-//		userREPO.save(new User("Estefanía García", "estefgar", "admin@admin.com", passEncoder.encode("admin"), "ADMIN"));
-//	};
-//}
-//
-//@Bean
-//CommandLineRunner iniDataCategories (CategoryRepo categoryREPO) {
-//	
-//	return (args) -> {
-//		categoryREPO.saveAll(Arrays.asList(
-//				new Category("Pasta", 1),
-//				new Category("Arroz",1),
-//				new Category("Carne",1),
-//				new Category("Pescados",1),
-//				new Category("Postres",1),
-//				new Category("Otros",1)));
-//	};
-//}
-//
-//
 
 
 }

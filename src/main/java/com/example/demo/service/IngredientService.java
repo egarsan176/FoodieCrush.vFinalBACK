@@ -26,6 +26,7 @@ public class IngredientService {
 		List<IngredientLine> list = recipe.getIngredientLine();
 		for (IngredientLine line : list) {
 			Ingredient ingred = line.getIngredient();
+			ingred.setName(ingred.getName().toUpperCase());
 			
 			Integer idIng = this.ingredientREPO.getIdFromIngredient(ingred.getName());
 			
