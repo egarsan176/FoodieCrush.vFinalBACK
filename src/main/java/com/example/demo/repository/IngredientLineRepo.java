@@ -25,5 +25,9 @@ public interface IngredientLineRepo extends JpaRepository<IngredientLine, Intege
 	 */
 	@Query(value="delete from recipe_ingredient_line where ingredient_line_id = ?1", nativeQuery = true)
 	public void deleteIngredientLineFK(Integer id);
+	
+	
+	@Query(value="delete from ingredient_line where recipe_id =?1", nativeQuery = true)
+	public void deleteLines(int id);
 
 }

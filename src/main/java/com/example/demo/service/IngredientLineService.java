@@ -87,15 +87,6 @@ public class IngredientLineService {
 		return this.ingredientLineREPO.save(ingredientLine);
 	}
 	
-	/**
-	 * MÉTODO para eliminar una línea de ingredientes de la bbdd
-	 * Primero, a través de una consulta, elimina la línea de la tabla autogenerada de recipe_id-ingredient_line_id en la que actúa como fk y luego la elimina del repositorio
-	 * @param ingredientLine
-	 */
-	public void delete(IngredientLine ingredientLine) {
-		this.ingredientLineREPO.deleteIngredientLineFK(ingredientLine.getId()); 
-		this.ingredientLineREPO.delete(ingredientLine);
-	}
 	
 	/**
 	 * MÉTODO que busca una línea de ingredientes a través de un ingrediente que se le pasa por parámetro
@@ -104,6 +95,10 @@ public class IngredientLineService {
 	 */
 	public IngredientLine findByIngredient(Ingredient ingredient) {
 		return this.ingredientLineREPO.findByIngredient(ingredient);
+	}
+	@Transactional
+	public void deleteLine(int recipeID) {
+		this.ingredientLineREPO.deleteLines(recipeID);
 	}
 	
 	

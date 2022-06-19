@@ -136,34 +136,48 @@ public class RecipeService {
 	 * @param idRecipe
 	 * @return
 	 */
+	@Transactional
 	public Recipe editRecipe(Recipe editRecipe, Integer idRecipe) {
 		
-		Recipe recipe = this.findRecipeById(idRecipe);
+		//receta que se quiere editar
+		Recipe recipeREPO = this.findRecipeById(idRecipe);
 		
-		if(editRecipe.getCategory() != null &&  editRecipe.getCategory() != recipe.getCategory()) {
-			Category cat = this.categoryService.findById(editRecipe.getCategory().getId());
-			recipe.setCategory(cat);
+		//categoría nueva de la receta
+		Integer idCategory = editRecipe.getCategory().getId();
+		Category cat = this.categoryService.findById(idCategory);
+
+
+		recipeREPO.setCategory(cat);
+		//añado los nuevos ingredientes a la bbdd
+		this.ingredientService.addIngredient(editRecipe);
+		
+		List<IngredientLine> IngLineList = this.ingredientLineService.addIngredientLine(editRecipe);
+		List<Method> MethodRecipe = this.methodService.addMethod(editRecipe);
+		
+		this.ingredientLineService.deleteLine(recipeREPO.getId());
+		recipeREPO.setIngredientLine(IngLineList);
+		recipeREPO.setMethod(MethodRecipe);
+		recipeREPO.setCategory(cat);
+		
+		for (IngredientLine line : IngLineList) {
+			line.setRecipe(recipeREPO);
+			
 		}
-		
+		recipeREPO.setIngredientLine(IngLineList);
+		recipeREPO.setMethod(MethodRecipe);
+		recipeREPO.setRecipeName(editRecipe.getRecipeName());
 		if(editRecipe.getFile()!=null) {
-			recipe.setFileID(editRecipe.getFile());
-		}
-		if(editRecipe.getIngredientLine()!= null) {
-			recipe.setIngredientLine(editRecipe.getIngredientLine());
-		}
-		if(editRecipe.getMethod()!= null) {
-			List<Method> methodDelete= recipe.getMethod();
-			recipe.setMethod(editRecipe.getMethod());
-			this.methodService.deleteMethod(methodDelete); //para que en la bbdd no se queden almacenados los métodos antiguos que ya no corresponden a ninguna receta
-		}
-		if(editRecipe.getRecipeName()!= null && editRecipe.getRecipeName() != recipe.getRecipeName()) {
-			recipe.setRecipeName(editRecipe.getRecipeName());
-		}
-		recipe.setComments(null);
-		recipe.setIsPending(true);
-		recipe.setFecha(editRecipe.getFecha());
+		recipeREPO.setFileID(editRecipe.getFile());
+	}
+		recipeREPO.setComments(null);
+		recipeREPO.setIsPending(true);
+		recipeREPO.setFecha(editRecipe.getFecha());
 		
-		return this.addRecipeBBDD(recipe);
+		this.methodService.deleteMethodwihtoutRecipe();
+		
+		return this.recipeRepo.save(recipeREPO);
+		
+
 		
 	}
 	

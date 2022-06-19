@@ -44,4 +44,12 @@ public class MethodService {
 		}
 		return listMethodREPO;
 	}
+	
+	/**
+	 * MÉTODO para borrar los métodos que se quedan colgados sin receta
+	 */
+	@Transactional
+	public void deleteMethodwihtoutRecipe() {
+		this.methodREPO.deleteMethodWithoutRecipe();
+	}
 }

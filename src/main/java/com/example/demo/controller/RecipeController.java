@@ -157,25 +157,29 @@ public class RecipeController {
 				throw new CategoryNotFoundException(idCategory);
 			}else {
 				
+				//creo una nueva receta vacía para perisistir los datos
 				Recipe rec = new Recipe();
 				rec = this.recipeService.addRecipeBBDD(rec);
-				int id = rec.getId();
+				//int id = rec.getId();
 				
-				recipe.setUser(user);
-				recipe.setCategory(cat);
+
+				//se añaden los ingredientes a la bbdd
 				this.ingredientService.addIngredient(recipe);
+				//se añaden las líneas de ingredientes
 				List<IngredientLine> IngLineList = this.ingredientLineService.addIngredientLine(recipe);
+				//se añade el método
 				List<Method> MethodRecipe = this.methodService.addMethod(recipe);
-				recipe.setIngredientLine(IngLineList);
-				recipe.setMethod(MethodRecipe);
+				//se borra la receta que se creó inicialmente
 				this.recipeService.deleteRecipe(rec);
-		
-				rec.setUser(user);
-				rec.setCategory(cat);
+
+				//se asocia la receta con la línea de ingredientes
 				for (IngredientLine line : IngLineList) {
 					line.setRecipe(rec);
 					
 				}
+				//se setean sus campos
+				rec.setUser(user);
+				rec.setCategory(cat);
 				rec.setIngredientLine(IngLineList);
 				rec.setMethod(MethodRecipe);
 				rec.setRecipeName(recipe.getRecipeName());
@@ -183,7 +187,8 @@ public class RecipeController {
 				if("ADMIN".equals(user.getRole())) {
 					rec.setIsPending(false);
 				}
-				
+
+				//se persiste en la bbdd con todos los campos de la receta q se pasó por parámetro
 				return this.recipeService.addRecipeBBDD(rec);
 				
 			}
